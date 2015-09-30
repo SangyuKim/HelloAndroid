@@ -2,15 +2,126 @@ package com.example.tacademy.helloandroid;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
+
+
+    TextView messageView, resultView;
+    Button[] btn;
+    StringBuffer strBuffer1, strBuffer2;
+    String operand1, operand2;
+    double resultNum;
+    char operator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        resultView = (TextView)findViewById(R.id.textView2);
+        strBuffer1 = new StringBuffer();
+        strBuffer2 = new StringBuffer();
+
+        btn = new Button[17];
+
+        for(int i=0; i<17; i++){
+            String buttonID = "button" + i;
+            int resID = getResources().getIdentifier(buttonID, "id", "com.example.tacademy.helloandroid");
+            btn[i] = (Button)findViewById(resID );
+        }
+
+        for(int i=0; i <17; i++){
+
+            btn[i].setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int temp=0;
+                    for(int i=0; i<17; i++){
+                        String buttonID = "button" + i;
+                        int resID = getResources().getIdentifier(buttonID, "id", "com.example.tacademy.helloandroid");
+                        if( v.getId()== resID){
+                            temp=i;
+                        }
+                    }
+                    if(temp<10){
+                    strBuffer1.append(temp);
+                    resultView.setText(strBuffer1.toString());
+                    }else if(temp==10){
+
+                        strBuffer1 = new StringBuffer();
+                        strBuffer2 = new StringBuffer();
+                        resultView.setText("0.0");
+                    }
+                    else if(temp==11){
+
+                        strBuffer1.append(".");
+                        resultView.setText(strBuffer1.toString());
+                    }
+                    else if(temp ==12){
+
+                        operand1 =  strBuffer1.toString();
+                        operand2 = strBuffer2.toString();
+                        strBuffer1 = new StringBuffer();
+                        strBuffer2 = new StringBuffer();
+                        switch (operator){
+
+                            case '+':
+                                resultNum= Double.parseDouble(operand1) + Double.parseDouble(operand2);
+                                resultView.setText(Double.toString(resultNum));
+                                break;
+                            case '-':
+                                resultNum= Double.parseDouble(operand2) - Double.parseDouble(operand1);
+                                resultView.setText(Double.toString(resultNum));
+                                break;
+                            case '*':
+                                resultNum= Double.parseDouble(operand1) * Double.parseDouble(operand2);
+                                resultView.setText(Double.toString(resultNum));
+                                break;
+                            case '/':
+                                resultNum= Double.parseDouble(operand2) / Double.parseDouble(operand1);
+                                resultView.setText(Double.toString(resultNum));
+                                break;
+
+                        }
+                    }else if(temp== 13){
+
+                        strBuffer2 = strBuffer1;
+                        strBuffer1 = new StringBuffer();
+                        operator ='+';
+                    }else if(temp ==14){
+
+                        strBuffer2 = strBuffer1;
+                        strBuffer1 = new StringBuffer();
+                        operator ='-';
+                    }else if(temp== 15){
+
+                        strBuffer2 = strBuffer1;
+                        strBuffer1 = new StringBuffer();
+                        operator ='*';
+                    }else if(temp ==16){
+
+                        strBuffer2 = strBuffer1;
+                        strBuffer1 = new StringBuffer();
+                        operator ='/';
+                    }
+                }
+            });
+        }
+
+
+
+
+
+
+
+
     }
 
     @Override
