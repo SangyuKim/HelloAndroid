@@ -14,8 +14,8 @@ import android.widget.TextView;
 public class MainActivity extends AppCompatActivity {
 
 
-    TextView messageView, resultView;
-    Button[] btn;
+    TextView resultView;
+    Button btn;
     StringBuffer strBuffer1, strBuffer2;
     String operand1, operand2;
     double resultNum;
@@ -29,87 +29,97 @@ public class MainActivity extends AppCompatActivity {
         strBuffer1 = new StringBuffer();
         strBuffer2 = new StringBuffer();
 
-        btn = new Button[17];
 
         for(int i=0; i<17; i++){
             String buttonID = "button" + i;
             int resID = getResources().getIdentifier(buttonID, "id", "com.example.tacademy.helloandroid");
-            btn[i] = (Button)findViewById(resID );
-        }
-
-        for(int i=0; i <17; i++){
-
-            btn[i].setOnClickListener(new View.OnClickListener() {
+            btn = (Button)findViewById(resID );
+            btn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    int temp=0;
-                    for(int i=0; i<17; i++){
+                    int temp = 0;
+                    for (int i = 0; i < 17; i++) {
                         String buttonID = "button" + i;
                         int resID = getResources().getIdentifier(buttonID, "id", "com.example.tacademy.helloandroid");
-                        if( v.getId()== resID){
-                            temp=i;
+                        if (v.getId() == resID) {
+                            temp = i;
                         }
                     }
-                    if(temp<10){
-                    strBuffer1.append(temp);
-                    resultView.setText(strBuffer1.toString());
-                    }else if(temp==10){
+                    if (temp < 10) {
+                        strBuffer1.append(temp);
+                        resultView.setText(strBuffer1.toString());
+                    } else if (temp == 10) {
 
                         strBuffer1 = new StringBuffer();
                         strBuffer2 = new StringBuffer();
                         resultView.setText("0.0");
-                    }
-                    else if(temp==11){
+                    } else if (temp == 11) {
 
                         strBuffer1.append(".");
                         resultView.setText(strBuffer1.toString());
-                    }
-                    else if(temp ==12){
+                    } else if (temp == 12) {
 
-                        operand1 =  strBuffer1.toString();
-                        operand2 = strBuffer2.toString();
-                        strBuffer1 = new StringBuffer();
-                        strBuffer2 = new StringBuffer();
-                        switch (operator){
+                        initNum();
+                        switch (operator) {
 
                             case '+':
-                                resultNum= Double.parseDouble(operand1) + Double.parseDouble(operand2);
+                                resultNum = Double.parseDouble(operand1) + Double.parseDouble(operand2);
                                 resultView.setText(Double.toString(resultNum));
+                                strBuffer1.append(resultNum);
                                 break;
                             case '-':
-                                resultNum= Double.parseDouble(operand2) - Double.parseDouble(operand1);
+                                resultNum = Double.parseDouble(operand2) - Double.parseDouble(operand1);
                                 resultView.setText(Double.toString(resultNum));
+                                strBuffer1.append(resultNum);
                                 break;
                             case '*':
-                                resultNum= Double.parseDouble(operand1) * Double.parseDouble(operand2);
+                                resultNum = Double.parseDouble(operand1) * Double.parseDouble(operand2);
                                 resultView.setText(Double.toString(resultNum));
+                                strBuffer1.append(resultNum);
                                 break;
                             case '/':
-                                resultNum= Double.parseDouble(operand2) / Double.parseDouble(operand1);
+                                resultNum = Double.parseDouble(operand2) / Double.parseDouble(operand1);
                                 resultView.setText(Double.toString(resultNum));
+                                strBuffer1.append(resultNum);
                                 break;
 
                         }
-                    }else if(temp== 13){
-
+                    } else if (temp == 13) {
+                        if(!strBuffer2.toString().equals("")){
+                            initNum();
+                            resultNum = Double.parseDouble(operand1) + Double.parseDouble(operand2);
+                            strBuffer1.append(resultNum);
+                        }
                         strBuffer2 = strBuffer1;
                         strBuffer1 = new StringBuffer();
-                        operator ='+';
-                    }else if(temp ==14){
-
+                        operator = '+';
+                    } else if (temp == 14) {
+                        if(!strBuffer2.toString().equals("")){
+                            initNum();
+                            resultNum = Double.parseDouble(operand2) - Double.parseDouble(operand1);
+                            strBuffer1.append(resultNum);
+                        }
                         strBuffer2 = strBuffer1;
                         strBuffer1 = new StringBuffer();
-                        operator ='-';
-                    }else if(temp== 15){
-
+                        operator = '-';
+                    } else if (temp == 15) {
+                        if(!strBuffer2.toString().equals("")){
+                            initNum();
+                            resultNum = Double.parseDouble(operand2) * Double.parseDouble(operand1);
+                            strBuffer1.append(resultNum);
+                        }
                         strBuffer2 = strBuffer1;
                         strBuffer1 = new StringBuffer();
-                        operator ='*';
-                    }else if(temp ==16){
-
+                        operator = '*';
+                    } else if (temp == 16) {
+                        if(!strBuffer2.toString().equals("")){
+                            initNum();
+                            resultNum = Double.parseDouble(operand2) / Double.parseDouble(operand1);
+                            strBuffer1.append(resultNum);
+                        }
                         strBuffer2 = strBuffer1;
                         strBuffer1 = new StringBuffer();
-                        operator ='/';
+                        operator = '/';
                     }
                 }
             });
@@ -117,11 +127,13 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
 
-
-
-
-
+    public void initNum(){
+        operand1 = strBuffer1.toString();
+        operand2 = strBuffer2.toString();
+        strBuffer1 = new StringBuffer();
+        strBuffer2 = new StringBuffer();
     }
 
     @Override
